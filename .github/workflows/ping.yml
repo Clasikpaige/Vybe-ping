@@ -1,0 +1,36 @@
+name: Keep E-Sound Awake
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show repository files
+        run: |
+          echo "CURRENT DIRECTORY:"
+          pwd
+          echo ""
+          echo "FILES IN ROOT:"
+          ls -la
+          echo ""
+          echo "ALL FILES:"
+          find . -maxdepth 3 -type f
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install requests
+        run: pip install requests
+
+      - name: Ping E-Sound
+        run: python ping.py
